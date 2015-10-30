@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Zeta Calculator</title>
+
+    <link rel="stylesheet" href="vendors/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/styles/style.css">
+
+    <script type="text/javascript" src="vendors/jquery.min.js"></script>
+    <script type="text/javascript" src="vendors/bootstrap.min.js"></script>
+    <script type="text/javascript" src="assets/scripts/app.js"></script>
+
+</head>
+<body>
+    <div class="container">
+        <div id="pageTitle" class="page-header">
+            <h1>Zeta Calculator<br><small>Weekend Challenge 3</small></h1>
+        </div>
+
+        <div id="userInputForm">
+            <h3>Enter Two (2) Numbers:</h3>
+
+            <form id="inputForm">
+                <label for="firstInput">Enter First Number: </label>
+                <input type="text" id="firstInput" name="firstInput" placeholder="Enter First Number">
+
+                <label for="secondInput">Enter Second Number: </label>
+                <input type="text" id="secondInput" name="secondInput" placeholder="Enter Second Number">
+            </form>
+        </div>
+
+
+
+        <div id="userMathOperation">
+            <h3>Select Mathematical Operation:</h3>
+            <div id="addition" class="btn btn-warning math-button" data-toggle="button">+</div>
+            <div id="subtraction" class="btn btn-warning math-button" data-toggle="button">-</div>
+            <div id="multiplication" class="btn btn-warning math-button" data-toggle="button">x</div>
+            <div id="division" class="btn btn-warning math-button" data-toggle="button">&divide;</div>
+        </div>
+
+        <div id="submitButton" class="btn btn-success">Calculate!</div>
+
+        <div id="displayNumbers"></div>
+
+        <div id="results"></div>
+
+        <div id="clearButton" class="btn btn-danger">Clear</div>
+
+    </div>
+</body>
+</html>
