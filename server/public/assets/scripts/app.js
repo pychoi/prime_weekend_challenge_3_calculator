@@ -1,42 +1,42 @@
 var inputObject = {};
+var tempNumber = "";
 
 $(document).ready(function(){
     init();
 });
 
 function init() {
-    $("#clearButton").hide();
 
-    //The code below prevents form inputs from appearing in the URL
-    $("#inputForm").submit(function(event){
-        event.preventDefault()
-    });
-
+    createNumberButtons();
     enable();
 }
 
-function enable(){
-    $('#submitButton').on('click', obtainInputNumber);
-    determineMathOperation();
+function createNumberButtons(){
+    for (var i = 7; i < 10; i++){
+        $("#numberButtons").append("<div id='" + i + "' class='btn btn-default col-md-4 num-button'>" + i + "</div>");
+    }
+    for (var i = 4; i < 7; i++){
+        $("#numberButtons").append("<div id='" + i + "' class='btn btn-default col-md-4 num-button'>" + i + "</div>");
+    }
+    for (var i = 1; i < 4; i++){
+        $("#numberButtons").append("<div id='" + i + "' class='btn btn-default col-md-4 num-button'>" + i + "</div>");
+    }
+    $("#numberButtons").append("<div id='" + 0 + "' class='btn btn-default col-md-4 num-button'>" + 0 + "</div>");
+    $("#numberButtons").append("<div id='.' class='btn btn-default col-md-4 num-button'>.</div>");
+    $("#numberButtons").append("<div id='equalButton' class='btn btn-success col-md-4'>=</div>");
+}
 
+function enable() {
+    clickNumberButton();
+    determineMathOperation();
+    $('#equalButton').on('click', calculate);
     $('#clearButton').on('click', clear);
 }
 
-//This function takes the numbers input by user and put them in inputObject as separate key:value pairs
-function obtainInputNumber(){
-
-    $.each($("#inputForm").serializeArray(), function(i, field){
-        inputObject[field.name] = field.value;
-    });
-
-    $("#inputForm").find("input[type=text]").val("");
-
-    //append Object information to DOM
-    appendInputInfo();
-
+//This function calls Ajax to perform calculation
+function calculate(){
     //POST object to server
     callAjax();
-    $("#clearButton").show();
 }
 
 //This function adds the selected math operation type to inputObject
@@ -44,14 +44,11 @@ function determineMathOperation(){
     $('.math-button').on('click', function(event){
         var mathType = event.target.id;
         inputObject.type = mathType;
-    });
-}
 
-//This function appends the input numbers on the DOM
-function appendInputInfo(){
-    $("#displayNumbers").append("<p>First Number: " + inputObject.firstInput + "</p>");
-    $("#displayNumbers").append("<p>Second Number: " + inputObject.secondInput + "</p>");
-    $("#displayNumbers").append("<p>Mathematical Operation: " + inputObject.type + "</p>");
+        //store first number to inputObject
+        inputObject.firstInput = tempNumber;
+        tempNumber = "";
+    });
 }
 
 //This function post inputObject to server
@@ -68,36 +65,22 @@ function callAjax(){
 
 //This function displays result of the calculation
 function displayResult(data){
-    addMathSymbol(inputObject);
-    $("#results").append("<p>" + inputObject.firstInput + " " +
-                            inputObject.symbol + " " +
-                            inputObject.secondInput +
-                            " = " + data.result + "</p>");
+    $("#calculatorDisplay").empty().text(data.result);
+    tempNumber = data.result;
 }
 
-//This function add math operation symbol according to inputObject.type
-function addMathSymbol(object){
-    switch(object.type) {
-        case "addition":
-            object.symbol = "+";
-            break;
-        case "subtraction":
-            object.symbol = "-";
-            break;
-        case "multiplication":
-            object.symbol = "*";
-            break;
-        case "division":
-        default:
-            object.symbol = "/";
-            break;
-    }
+function clickNumberButton(){
+    $('.num-button').on('click', function(event){
+        var number = "";
+        number = event.target.id;
+        tempNumber += number;
+        $("#calculatorDisplay").empty().text(tempNumber);
+        inputObject.secondInput = tempNumber;
+    });
 }
 
 function clear(){
-    $("#displayNumbers").empty();
-    $("#results").empty();
     inputObject = {};
-    $("#clearButton").hide();
-    $(".math-button").removeClass('active');
+    tempNumber = "";
+    $("#calculatorDisplay").empty().text("0");
 }
