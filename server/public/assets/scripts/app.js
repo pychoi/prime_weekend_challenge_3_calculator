@@ -13,17 +13,17 @@ function init() {
 
 function createNumberButtons(){
     for (var i = 7; i < 10; i++){
-        $("#numberButtons").append("<div id='" + i + "' class='btn btn-default col-md-4 num-button'>" + i + "</div>");
+        $("#numberButtons").append("<div id='" + i + "' class='btn btn-default col-xs-4 num-button'>" + i + "</div>");
     }
     for (var i = 4; i < 7; i++){
-        $("#numberButtons").append("<div id='" + i + "' class='btn btn-default col-md-4 num-button'>" + i + "</div>");
+        $("#numberButtons").append("<div id='" + i + "' class='btn btn-default col-xs-4 num-button'>" + i + "</div>");
     }
     for (var i = 1; i < 4; i++){
-        $("#numberButtons").append("<div id='" + i + "' class='btn btn-default col-md-4 num-button'>" + i + "</div>");
+        $("#numberButtons").append("<div id='" + i + "' class='btn btn-default col-xs-4 num-button'>" + i + "</div>");
     }
-    $("#numberButtons").append("<div id='" + 0 + "' class='btn btn-default col-md-4 num-button'>" + 0 + "</div>");
-    $("#numberButtons").append("<div id='.' class='btn btn-default col-md-4 num-button'>.</div>");
-    $("#numberButtons").append("<div id='equalButton' class='btn btn-success col-md-4'>=</div>");
+    $("#numberButtons").append("<div id='" + 0 + "' class='btn btn-default col-xs-4 num-button'>" + 0 + "</div>");
+    $("#numberButtons").append("<div id='.' class='btn btn-default col-xs-4 num-button'>.</div>");
+    $("#numberButtons").append("<div id='equalButton' class='btn btn-success col-xs-4'>=</div>");
 }
 
 function enable() {
@@ -33,10 +33,14 @@ function enable() {
     $('#clearButton').on('click', clear);
 }
 
-//This function calls Ajax to perform calculation
-function calculate(){
-    //POST object to server
-    callAjax();
+function clickNumberButton(){
+    $('.num-button').on('click', function(event){
+        var number = "";
+        number = event.target.id;
+        tempNumber += number;
+        $("#calculatorDisplay").empty().text(tempNumber);
+        inputObject.secondInput = tempNumber;
+    });
 }
 
 //This function adds the selected math operation type to inputObject
@@ -49,6 +53,12 @@ function determineMathOperation(){
         inputObject.firstInput = tempNumber;
         tempNumber = "";
     });
+}
+
+//This function calls Ajax to perform calculation
+function calculate(){
+    //POST object to server
+    callAjax();
 }
 
 //This function post inputObject to server
@@ -69,16 +79,7 @@ function displayResult(data){
     tempNumber = data.result;
 }
 
-function clickNumberButton(){
-    $('.num-button').on('click', function(event){
-        var number = "";
-        number = event.target.id;
-        tempNumber += number;
-        $("#calculatorDisplay").empty().text(tempNumber);
-        inputObject.secondInput = tempNumber;
-    });
-}
-
+//This function resets the calculator
 function clear(){
     inputObject = {};
     tempNumber = "";
